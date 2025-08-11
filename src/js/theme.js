@@ -18,10 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('text-zinc-300');
     document.body.classList.remove('bg-neutral-100');
     document.body.classList.remove('text-zinc-900');
-    search_container.classList.add('text-zinc-300');
-    search_container.classList.add('border-zinc-200');
-    search_container.classList.remove('text-zinc-900');
-    search_container.classList.remove('border-zinc-900');
     localStorage.setItem('theme', 'oscuro');
     btn_theme.textContent = '🌙';
     themeContainer.classList.toggle('justify-end');
@@ -34,10 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('text-zinc-900');
     document.body.classList.remove('bg-neutral-900');
     document.body.classList.remove('text-zinc-300');
-    search_container.classList.remove('text-zinc-300');
-    search_container.classList.remove('border-zinc-200');
-    search_container.classList.add('text-zinc-900');
-    search_container.classList.add('border-zinc-900');
     localStorage.setItem('theme', 'claro');
     btn_theme.textContent = '☀️';
     themeContainer.classList.toggle('bg-zinc-200');
@@ -53,10 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('text-zinc-300');
       document.body.classList.add('bg-neutral-100');
       document.body.classList.add('text-zinc-900');
-      search_container.classList.remove('text-zinc-900');
-      search_container.classList.remove('border-zinc-900');
-      search_container.classList.add('text-zinc-300');
-      search_container.classList.add('border-zinc-200');
       themeContainer.classList.add('bg-zinc-200');
       btn_theme.textContent = '☀️';
       gsap.fromTo("#theme", { x: inicio }, { x: final , duration: 0.5 });
@@ -67,10 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('text-zinc-300');
       document.body.classList.remove('bg-neutral-100');
       document.body.classList.remove('text-zinc-900');
-      search_container.classList.remove('text-zinc-300');
-      search_container.classList.remove('border-zinc-200');
-      search_container.classList.add('text-zinc-900');
-      search_container.classList.add('border-zinc-900');
       themeContainer.classList.remove('bg-zinc-200');
       btn_theme.textContent = '🌙';
       gsap.fromTo("#theme", { x: final  }, { x: inicio , duration: 0.5 });
