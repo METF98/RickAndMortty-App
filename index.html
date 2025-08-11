@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RICK AND MORTY APP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <link rel="stylesheet" href="./src/css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;400;500;600;700');
+
+    * {
+      font-family: "Atma","sans-serif";
+    }
+  </style>
+  <script type="module" src="./src/js/theme.js"></script>
+
+</head>
+
+<body class="flex flex-col gap-8 ">
+  <nav class="flex justify-between bg-neutral-900  xl:justify-around items-center gap-2 border-b border-zinc-200/5 p-4 text-zinc-300  ">
+    <img class="h-12 hover:scale-110 transition-all duration-200 ease-in" src="./src/img/logo.png"
+      alt="logo-rick-and-morty">
+    <div class="flex justify-end items-center gap-6 ">
+      <div id="theme-container" class="flex items-center border border-zinc-300 rounded-full w-15 overflow-hidden">
+        <button id="theme" class="bg-neutral-500 p-1  rounded-full cursor-pointer"></button>
+      </div>
+      <div id="menu-container" class="hidden md:flex gap-5">
+        <ul id="menu" class="flex gap-4">
+          <li class=" cursor-pointer px-3 py-2 transition-all duration-200 ease  hover:bg-neutral-400 hover:text-zinc-100 rounded-full group/home">
+            <a href="#home">
+              <i class="fa-solid fa-house transition-all ease-in duration-200 group-hover/home:scale-110  group-hover/home:text-neutral-900"></i>
+            </a>
+          </li>
+          <li id="favorites" class=" cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/favorites">
+            <a href="./src/pages/favorites-list.html">
+              <i class="fa-solid fa-heart transition-all ease-in duration-200  group-hover/favorites:scale-110 group-hover/favorites:text-neutral-900"></i>
+            </a>
+          </li>
+        </ul>
+        <button class="cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/status ">
+          <p id="status" class="transition-all ease-in duration-200 group-hover/status:scale-110 group-hover/status:text-neutral-900 font-semibold">
+            login
+          </p>
+        </button>
+      </div>
+      <button class="md:hidden p-2 rounded-lg cursor-pointer bg-neutral-600 text-neutral-300 ">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+  <main class="flex flex-col gap-8 px-4 ">
+    <header>
+      <h1>WELCOME TO RICK AND MORTY APP</h1>
+      <p>Find your favorite character</p>
+    </header>
+    <section id="home" >
+      <h2>Characters</h2>
+      <div id="search-container" class="flex items-center gap-2 border rounded-full px-3 py-1 ">
+        <input class="bg-transparent outline-none w-full " type="text" id="search"
+          placeholder="Search">
+        <button id="search-button" class="cursor-pointer px-2 group/search text-lg"><i
+            class="fa-solid fa-magnifying-glass group-hover/search:text-zinc-100"></i></button>
+      </div>
+      <div id="cards"></div>
+    </section>
+  </main>
+  <footer class="flex justify-end px-4">
+    <p>Created by: Miguel Ticaray</p>
+  </footer>
+  <script type="module" src="./src/js/main.js"></script>
+  <script type="module" src="./src/js/register.js"></script>
+
+</body>
+
+</html>
