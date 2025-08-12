@@ -1,10 +1,12 @@
-import {getCharacters,} from'./funtions.js';
+import {getCharacters, efectCard} from'./funtions.js';
+
+gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
 
-
-  getCharacters();
-  gsap.registerPlugin(ScrollTrigger);
+  if(getCharacters()){
+    efectCard();
+  }
 
 
 

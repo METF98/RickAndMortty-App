@@ -49,7 +49,6 @@ export async function getCharacters() {
       </div>
       `;
         cards.appendChild(card);
-        efectCard();
       });
     })
     .catch((error) => console.log(error));
@@ -72,28 +71,28 @@ function lifeStatus(status) {
   }
 }
 
-function efectCard() {
-  const cards = document.querySelectorAll(".card");
+export function efectCard() {
+  const cards = document.getElementById("cards").children;
   let cardTl = gsap.timeline();
 
-  cards.forEach(card => {
+  let character = document.getElementById("1");
+  console.log(character);
     cardTl.fromTo(
-      card,
+      cards,
       { opacity: 0, scale: 0.5 },
       {
         opacity: 1,
         scale: 1,
-        stagger: 0.2,
+        stagger: 0.08,
         scrollTrigger: {
-          trigger: "#inicio",
-          start: "20% 10%",
-          end: "50% 50%",
-          markers: true,
+          trigger:'#home',
+          start: "-50% bottom",
+          end: "50% top",
           scrub: true,
-        },
+          markers: true,
+        }
       }
     );
-  });
 }
 
 // export function efectCard() {
