@@ -1,14 +1,12 @@
-import {getCharacters, efectCard} from'./funtions.js';
+import {getCharacters, scrollNavBar} from'./funtions.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  if(getCharacters()){
-    efectCard();
-  }
+  getCharacters();
 
-
+  document.addEventListener('scroll', scrollNavBar);
 
 });
 

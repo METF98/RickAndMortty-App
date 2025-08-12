@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -26,7 +26,7 @@
 
 <body class="flex flex-col items-center gap-8 w-full xl:min-w-6xl">
   <nav
-    class="flex w-full justify-between bg-neutral-900  xl:justify-around items-center gap-2 border-b border-zinc-200/5 py-4 px-6 text-zinc-300  ">
+    class="flex w-full justify-between bg-neutral-900  xl:justify-around items-center gap-2 border-b border-zinc-200/5 py-4 px-6 text-zinc-300 sticky top-0 z-99 ">
     <img class="h-12 hover:scale-110 transition-all duration-200 ease-in" src="./src/img/logo.png"
       alt="logo-rick-and-morty">
     <div class="flex justify-end items-center gap-6 ">
@@ -50,13 +50,13 @@
             </a>
           </li>
         </ul>
-        <button
+        <a href="./src/pages/login.html"
           class="cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/status ">
           <p id="status"
             class="transition-all ease-in duration-200 group-hover/status:scale-110 group-hover/status:text-neutral-900 font-semibold">
             login
           </p>
-        </button>
+        </a>
       </div>
       <button class="md:hidden p-2 rounded-lg cursor-pointer bg-neutral-600 text-neutral-300 ">
         <i class="fa-solid fa-bars"></i>
@@ -87,8 +87,6 @@
     <p>Created by: Miguel Ticaray</p>
   </footer>
   <script type="module" src="./src/js/main.js"></script>
-  <script type="module" src="./src/js/register.js"></script>
-
 </body>
 
 </html>

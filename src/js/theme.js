@@ -2,66 +2,123 @@ let btn_theme = document.getElementById('theme');
 let themeContainer = document.getElementById('theme-container');
 let search_container = document.getElementById('search-container');
 let input_search = document.getElementById('search');
-let btn_search = document.getElementById('search-button');
-let menu = document.getElementById('menu');
-let menuContainer = document.getElementById('menu-container');
-let status = document.getElementById('status');
-let favorites = document.getElementById('favorites');
 
+//Evento para cargar el tema del sitio
 document.addEventListener('DOMContentLoaded', () => {
 
+  //inicial var animation
   let inicio = 0;
   let final = 0;
 
   if(theme() == 'oscuro'){
+    //body oscuro
     document.body.classList.add('bg-neutral-900');
     document.body.classList.add('text-zinc-300');
     document.body.classList.remove('bg-neutral-100');
     document.body.classList.remove('text-zinc-900');
-    localStorage.setItem('theme', 'oscuro');
-    btn_theme.textContent = '🌙';
-    themeContainer.classList.toggle('justify-end');
 
+    //Input search oscuro
+    if(search_container){
+      search_container.classList.add('border-zinc-300');
+      search_container.classList.add('text-zinc-300');
+      search_container.classList.remove('border-zinc-900');
+      search_container.classList.remove('text-zinc-900');
+    }
+
+    //button theme oscuro
+    if(themeContainer){
+      themeContainer.classList.toggle('justify-end');
+      btn_theme.textContent = '🌙';
+    }
+    //variable para localStorage
+    localStorage.setItem('theme', 'oscuro');
+
+    //var animation
     inicio = 0;
     final = -29;
 
   }else{
+    //body claro
     document.body.classList.add('bg-neutral-100');
     document.body.classList.add('text-zinc-900');
     document.body.classList.remove('bg-neutral-900');
     document.body.classList.remove('text-zinc-300');
-    localStorage.setItem('theme', 'claro');
-    btn_theme.textContent = '☀️';
-    themeContainer.classList.toggle('bg-zinc-200');
 
+    //Input search claro
+    if(search_container){
+      search_container.classList.add('border-zinc-900');
+      search_container.classList.add('text-zinc-900');
+      search_container.classList.remove('border-zinc-300');
+      search_container.classList.remove('text-zinc-300');
+    }
+
+    //button theme claro
+    if(themeContainer){
+      themeContainer.classList.toggle('bg-zinc-200');
+      btn_theme.textContent = '☀️';
+    }
+
+    //variable para localStorage
+    localStorage.setItem('theme', 'claro');
+
+    //var animation
     inicio = 29;
     final = 0;
   }
 
+  //Evento para cambiar el tema del sitio
+  if(btn_theme){
+    btn_theme.addEventListener('click', () => {
+      if(btn_theme.textContent == '🌙'){
+        //body claro
+        document.body.classList.remove('bg-neutral-900');
+        document.body.classList.remove('text-zinc-300');
+        document.body.classList.add('bg-neutral-100');
+        document.body.classList.add('text-zinc-900');
 
-  btn_theme.addEventListener('click', () => {
-    if(btn_theme.textContent == '🌙'){
-      document.body.classList.remove('bg-neutral-900');
-      document.body.classList.remove('text-zinc-300');
-      document.body.classList.add('bg-neutral-100');
-      document.body.classList.add('text-zinc-900');
-      themeContainer.classList.add('bg-zinc-200');
-      btn_theme.textContent = '☀️';
-      gsap.fromTo("#theme", { x: inicio }, { x: final , duration: 0.5 });
-      localStorage.setItem('theme', 'claro');
+        //Input search claro
+        search_container.classList.add('border-zinc-900');
+        search_container.classList.add('text-zinc-900');
+        search_container.classList.add('text-zinc-900');
+        search_container.classList.remove('text-zinc-300');
+        search_container.classList.remove('border-zinc-300');
+        search_container.classList.remove('text-zinc-300');
 
-    }else if(btn_theme.textContent == '☀️'){
-      document.body.classList.add('bg-neutral-900');
-      document.body.classList.add('text-zinc-300');
-      document.body.classList.remove('bg-neutral-100');
-      document.body.classList.remove('text-zinc-900');
-      themeContainer.classList.remove('bg-zinc-200');
-      btn_theme.textContent = '🌙';
-      gsap.fromTo("#theme", { x: final  }, { x: inicio , duration: 0.5 });
-      localStorage.setItem('theme', 'oscuro');
-    }
+        //button theme claro
+        themeContainer.classList.add('bg-zinc-200');
+        btn_theme.textContent = '☀️';
 
-  });
+        //animation btn
+        gsap.fromTo("#theme", { x: inicio }, { x: final , duration: 0.5 });
+
+        //variable para localStorage
+        localStorage.setItem('theme', 'claro');
+
+      }else if(btn_theme.textContent == '☀️'){
+        //body oscuro
+        document.body.classList.add('bg-neutral-900');
+        document.body.classList.add('text-zinc-300');
+        document.body.classList.remove('bg-neutral-100');
+        document.body.classList.remove('text-zinc-900');
+
+        //Input search oscuro
+        search_container.classList.add('border-zinc-300');
+        search_container.classList.add('text-zinc-300');
+        search_container.classList.remove('text-zinc-900');
+        search_container.classList.remove('border-zinc-900');
+
+        //button theme oscuro
+        themeContainer.classList.remove('bg-zinc-200');
+        btn_theme.textContent = '🌙';
+
+        //animation btn
+        gsap.fromTo("#theme", { x: final  }, { x: inicio , duration: 0.5 });
+
+        //variable para localStorage
+        localStorage.setItem('theme', 'oscuro');
+      }
+    });
+  }
 });
 
 
