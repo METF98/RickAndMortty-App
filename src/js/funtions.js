@@ -1,10 +1,16 @@
+
+import {bcrypt} from "https://cdn.jsdelivr.net/npm/bcryptjs@3.0.2/umd/index.min.js";
+import { dotenv } from "https://cdn.jsdelivr.net/npm/dotenv@17.2.1/lib/main.min.js";
+
+export {getCharacters, scrollNavBar, efectForm, validateForm, encryptPassword };
+
 /**
  * @description Function to get the characters from the API
  * @return {Promise} - The characters
  * @author Miguel Ticaray
  * @version 1.0
  */
-export async function getCharacters(page = 1) {
+async function getCharacters(page = 1) {
   let cards = document.getElementById("cards");
 
   //Get characters
@@ -282,7 +288,7 @@ function alertMassage(info_message) {
  * @author Miguel Ticaray
  * @version 1.0
  */
-export function scrollNavBar() {
+function scrollNavBar() {
   let nav = document.querySelector("nav");
   let scroll = window.scrollY;
 
@@ -310,4 +316,207 @@ export function scrollNavBar() {
     );
     nav.classList.add("bg-neutral-900");
   }
+}
+
+/**
+ * @description Function to animate the form
+ * @param {integer} x_inicio - The x position of the separador @example 0
+ * @param {integer} x_final - The x position of the separador @example -230
+ * @param {html} login_container - div that contains the form login @example login-container
+ * @param {html} register_container - div that contains the form register @example register-container
+ * @param {html} separador - div that contains the separador @example separador
+ * @param {html} btn_switch - button that change the position of the form @example btn_switch
+ * @param {html} p_separador_1 - p that contains the text in the separador  @example "¿Don't have an account yet?"
+ * @param {html} p_separador_2 - p that contains the text in the separador @example "Sign up for free"
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function efectForm(
+  x_inicio,
+  x_final,
+  login_container,
+  register_container,
+  separador,
+  btn_switch,
+  p_separador_1,
+  p_separador_2
+) {
+  if (btn_switch.textContent == "Sign up") {
+    gsap.fromTo(
+      login_container,
+      {
+        x: x_inicio,
+        opacity: 1,
+      },
+      {
+        opacity: 0,
+        x: -x_final,
+        duration: 0.4,
+      }
+    );
+    gsap.fromTo(
+      separador,
+      { x: x_inicio },
+      {
+        x: x_final,
+        duration: 0.1,
+        ease: "power2.inOut",
+        onStart: () => {
+          gsap.fromTo(
+            register_container,
+            {
+              opacity: 0,
+              x: x_final,
+            },
+            {
+              x: x_inicio,
+              opacity: 1,
+              duration: 0.4,
+            }
+          );
+        },
+        onComplete: () => {
+          p_separador_1.textContent = "Already have an account?";
+          p_separador_2.textContent = "Sign in";
+          btn_switch.textContent = "Login";
+          login_container.classList.remove("z-5");
+          register_container.classList.add("z-5");
+        },
+      }
+    );
+  } else {
+    gsap.fromTo(
+      register_container,
+      {
+        opacity: 1,
+        x: x_inicio,
+      },
+      {
+        x: x_final,
+        opacity: 0,
+        duration: 0.5,
+      }
+    );
+    gsap.fromTo(
+      separador,
+      { x: x_final },
+      {
+        x: x_inicio,
+        duration: 0.1,
+        ease: "power4.inOut",
+        onStart: () => {
+          gsap.fromTo(
+            login_container,
+            {
+              opacity: 0,
+              x: -x_final,
+            },
+            {
+              x: x_inicio,
+              opacity: 1,
+              duration: 0.5,
+            }
+          );
+        },
+        onComplete: () => {
+          p_separador_1.textContent = "¿Don't have an account yet?";
+          p_separador_2.textContent = "Sign up for free";
+          btn_switch.textContent = "Sign up";
+          login_container.classList.add("z-5");
+          register_container.classList.remove("z-5");
+        },
+      }
+    );
+  }
+}
+
+/**
+ * @description Function to validate the form and return the result
+ * @param {string} users - username of the user @example "miguel"
+ * @param {string} password - password of the user @example "123456"
+ * @param {string} [password_2=null] - password of the user @example "123456"
+ * @param {string} form - form to validate @example "login" or "register"
+ * @return {object} - object with the result of the validation @example {error: true , message: "El usuario no existe"}
+ */
+function validateForm(users, password, password_2 = null, form) {
+  if (form == "login") {
+    let datos = searchStorage(users);
+    if (!datos) {
+      return { error: true, message: "El usuario no existe" };
+    }
+    if (users == "" || password == "") {
+      return { error: true, message: "Debes completar todos los campos" };
+    } else {
+      if (users == datos.user && password == datos.password) {
+        return { error: false, message: "Login exitoso" };
+      } else {
+        return {
+          error: true,
+          message: "El usuario o la contraseña son incorrectos",
+        };
+      }
+    }
+  } else {
+    let datos = searchStorage(users);
+    if (datos) {
+      if (users == datos.user) {
+        return { error: true, message: "El usuario ingresado ya existe" };
+      }
+    }
+    if (users == "" || password == "" || password_2 == "") {
+      return { error: true, message: "Debes completar todos los campos" };
+    } else {
+      if (password != password_2) {
+        return { error: true, message: "Las contraseñas no coinciden" };
+      }
+      if (register(users, password)) {
+        return { error: false, message: "Registro exitoso" };
+      }
+    }
+  }
+}
+
+/**
+ * @description Function to search the user in the localStorage
+ * @param {string} user - The user to search @example "miguel"
+ * @return {object} - The user @example {user:"miguel",password:"123456",characters:[1,3,5]}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function searchStorage(user) {
+  let respuesta = null;
+  if (localStorage.getItem("users") == null) {
+    localStorage.setItem("users", JSON.stringify([]));
+  }
+
+  for (let i = 0; i < JSON.parse(localStorage.getItem("users")).length; i++) {
+    if (JSON.parse(localStorage.getItem("users"))[i].user == user) {
+      respuesta = JSON.parse(localStorage.getItem("users"))[i];
+      if (respuesta) {
+        return respuesta;
+      } else {
+        return false;
+      }
+    }
+  }
+}
+
+/**
+ * @description Function to register a new user
+ * @param {string} user - The user to register @example "miguel"
+ * @param {string} password - The password to register @example "123456"
+ * @return {boolean}
+ */
+function register(user, password) {
+  let users = JSON.parse(localStorage.getItem("users"));
+  users.push({ user: user, password: password, characters: [] });
+  localStorage.setItem("users", JSON.stringify(users));
+  return true;
+}
+
+function encryptPassword(password) {
+  // let encrypted = bscript.hashSync(password, );
+  // return encrypted;
+  console.log(dotenv.config({ path: './../../.env' }))
 }
