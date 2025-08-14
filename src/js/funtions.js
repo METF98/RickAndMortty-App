@@ -1,8 +1,17 @@
-
 import bcrypt from "https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/+esm";
-import dotenv from "https://cdn.jsdelivr.net/npm/dotenv@17.2.1/lib/main.min.js";
+import "./env.js";
 
-export {getCharacters, scrollNavBar, efectForm, validateForm, encryptPassword };
+export {
+  getCharacters,
+  scrollNavBar,
+  efectForm,
+  validateForm,
+  encryptPassword,
+  alertMassage,
+  showLoader,
+  hideloader,
+  verificarSesion,
+};
 
 /**
  * @description Function to get the characters from the API
@@ -246,7 +255,7 @@ function alertMassage(info_message) {
     "top-0",
     "left-0",
     "bg-zinc-900/50",
-    "z-1",
+    "z-10",
     "flex",
     "justify-center",
     "items-center"
@@ -439,8 +448,11 @@ function efectForm(
  * @param {string} form - form to validate @example "login" or "register"
  * @return {object} - object with the result of the validation @example {error: true , message: "El usuario no existe"}
  */
-function validateForm(users, password, password_2 = null, form) {
+async function validateForm(users, password, password_2 = null, form) {
   if (form == "login") {
+    if (sessionStorage.getItem("sesion") == null) {
+      sessionStorage.setItem("sesion", JSON.stringify([]));
+    }
     let datos = searchStorage(users);
     if (!datos) {
       return { error: true, message: "El usuario no existe" };
@@ -448,7 +460,11 @@ function validateForm(users, password, password_2 = null, form) {
     if (users == "" || password == "") {
       return { error: true, message: "Debes completar todos los campos" };
     } else {
-      if (users == datos.user && password == datos.password) {
+      let passwordDecrypt = await decryptPassword(datos, password);
+      if (passwordDecrypt) {
+        let sesion = JSON.parse(sessionStorage.getItem("sesion"));
+        sesion.push({ user: datos.user, logged: true});
+        sessionStorage.setItem("sesion", JSON.stringify(sesion));
         return { error: false, message: "Login exitoso" };
       } else {
         return {
@@ -509,14 +525,146 @@ function searchStorage(user) {
  * @return {boolean}
  */
 function register(user, password) {
+  let passwordHash = encryptPassword(password);
   let users = JSON.parse(localStorage.getItem("users"));
-  users.push({ user: user, password: password, characters: [] });
+  users.push({ user: user, password: passwordHash, characters: [] });
   localStorage.setItem("users", JSON.stringify(users));
   return true;
 }
 
+/**
+ * @description Function to encrypt the password with bcrypt
+ * @see \
+ * @param {string} password - The password to encrypt @example "123456"
+ * @return {string} - The encrypted password
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
 function encryptPassword(password) {
-  // let encrypted = bscript.hashSync(password, );
-  // return encrypted;
-  console.log(dotenv.config({ path: './../../.env' }))
+  let mysalt = bcrypt
+    .genSaltSync(10)
+    .replace(/.{22}$/, window.env.TOKEN_SECRET);
+  let hash = bcrypt.hashSync(password, mysalt);
+  return hash;
 }
+
+/**
+ * @description Function to decrypt the password with bcrypt
+ * @param {string} user - The user for password to compare @example "miguel"
+ * @param {string} password - The password to compare @example "123456"
+ * @return {boolean} - The result of the comparison
+ */
+async function decryptPassword(user, password) {
+  let passwordHash = user.password;
+
+  try {
+    const result = await bcrypt.compare(password, passwordHash);
+
+    if (result) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+}
+
+/**
+ * @description Function to hide the loader
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function hideloader() {
+  let modal = document.getElementById("modal_loader");
+  let modal_loader = document.getElementById("dialog_loader");
+
+  modal.classList.remove("flex");
+  modal_loader.classList.remove("flex");
+  modal.classList.add("hidden");
+  modal_loader.classList.add("hidden");
+}
+
+/**
+ * @description Funcion for show the loader
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function showLoader() {
+  let modal = document.createElement("dialog");
+  let container_loader = document.createElement("div");
+  let loader = document.createElement("div");
+
+  modal.id = "dialog_loader";
+  container_loader.id = "modal_loader";
+  modal.classList.add(
+    "flex",
+    "justify-center",
+    "items-center",
+    "bg-zinc-900/50",
+    "fixed",
+    "top-0",
+    "left-0",
+    "w-screen",
+    "h-screen",
+    "min-h-screen",
+    "z-99",
+    "w-screen",
+    "h-screen"
+  );
+  container_loader.classList.add(
+    "flex",
+    "flex-col",
+    "justify-center",
+    "items-center",
+    
+    "min-w-30",
+    "min-h-30",
+    "overflow-auto",
+    "rounded-md",
+    "p-2",
+    "sahdow-lg"
+  );
+  loader.classList.add("loader");
+
+  document.body.appendChild(modal);
+  modal.appendChild(container_loader);
+  container_loader.appendChild(loader);
+}
+
+/**
+ * @description Function to verify if the user is logged
+ * @return {boolean} - The result of the verification
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function verificarSesion(){
+  if(sessionStorage.getItem("sesion") == null){
+    return false;
+  }else{
+    let sesion = JSON.parse(sessionStorage.getItem("sesion"));
+    if(sesion[0].logged == true){
+      return true;
+    }else{
+      return false;
+    }
+  }
+}
+
+function show_pass(id_input, id_btn){
+  let pass = document.querySelector("#password");
+  let btn_pass = document.querySelector("#show-btn");
+
+  // console.log(pass.value);
+    if(pass.value != ""){
+      if(pass.type == "password"){
+      pass.type = "text";
+      show_pass.style.display = "none";
+    }else{
+      pass.type = "password";
+      show_pass.style.display = "block";
+    }
+  }
+  }

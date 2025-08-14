@@ -13,6 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
   <link rel="stylesheet" href="./src/css/style.css">
+  <link rel="stylesheet" href="./src/css/loader.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;400;500;600;700');
     * {
@@ -24,7 +25,7 @@
 <body class="flex flex-col items-center justify-center p-6 w-sceen h-screen bg-neutral-900 gap-8">
   <img class="w-32 h-32" src="./src/img/favicon.png" alt="logo">
   <h1 class="text-4xl font-bold uppercase text-zinc-100">RICK AND MORTY APP</h1>
-  <form id="login" class="flex items-center justify-center text-zinc-900 bg-neutral-300 border border-zinc-300 rounded-3xl overflow-hidden relative gap-10 p-6 w-[450px] ">
+  <form id="login" class="flex items-center justify-center text-zinc-900 bg-neutral-300 border border-zinc-300 rounded-3xl  relative gap-10 p-6 w-[450px] h-80 ">
     <div id="login-container" class="flex flex-col items-center justify-center gap-7 ">
         <h2 class="text-2xl font-bold uppercase text-zinc-800">login</h2>
       <div class="flex flex-col gap-6 w-full">
@@ -36,8 +37,9 @@
         </div>
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="fa-solid fa-lock"></i>
-          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10">
+          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password" id="password" placeholder="Password">
+            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password', 'eye')"></i>
           </div>
         </div>
       </div>
@@ -45,7 +47,7 @@
         <button id="btn_login" class="bg-neutral-500 px-8 py-2 rounded-lg cursor-pointer font-semibold lg:hover:scale-105 lg:hover:bg-neutral-500/70 text-lg">login</button>
       </div>
     </div>
-    <div id="separador" class="h-full bg-neutral-600 w-1/2 p-4 flex flex-col gap-5 items-center justify-center text-md text-center font-semibold text-zinc-200 transition-all duration-200 ease-in absolute right-0 z-10">
+    <div id="separador" class="h-full bg-neutral-600 w-1/2 p-4 flex flex-col gap-5 items-center justify-center text-md text-center font-semibold rounded-3xl text-zinc-200 transition-all duration-200 ease-in absolute right-0 z-8">
       <div>
         <p id="p_separador_1">¿Don't have an account yet?</p>
         <p id="p_separador_2">Sign up for free</p>
@@ -63,14 +65,16 @@
         </div>
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="fa-solid fa-lock"></i>
-          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10">
+          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password" id="password_register" placeholder="Password">
+            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password', 'eye')"></i>
           </div>
         </div>
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="fa-solid fa-lock"></i>
-          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10">
+          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password_register_2" id="password_register_2" placeholder="Repeat password">
+            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password', 'eye')"></i>
           </div>
         </div>
       </div>

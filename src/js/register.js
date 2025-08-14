@@ -1,6 +1,9 @@
-import { efectForm, validateForm, encryptPassword } from "./funtions.js";
+import { efectForm, validateForm, alertMassage,verificarSesion} from "./funtions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  if(verificarSesion()){
+    window.location.href = "./../src/pages/landing.html";
+  }
   const btn_switch = document.getElementById("btn_switch");
   const register_container = document.getElementById("register-container");
   const login_container = document.getElementById("login-container");
@@ -24,44 +27,43 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  btn_register.addEventListener("click", (e) => {
+  btn_register.addEventListener("click", async  (e) => {
+    document.getElementById("login").addEventListener("submit",(e) => {
+      e.preventDefault();
+    })
     e.preventDefault();
     let user = document.getElementById("user_register").value;
     let password = document.getElementById("password_register").value;
     let password2 = document.getElementById("password_register_2").value;
-    let registro = validateForm(user, password, password2, "register");
+    let registro = await validateForm(user, password, password2, "register");
 
     if (registro.error) {
-      alert(registro.message);
+      alertMassage(registro.message);
     }else{
-      alert(registro.message);
+      alertMassage(registro.message);
+
+      setTimeout(() => {
+        window.location.reload();
+      },1200);
     }
   });
 
-  btn_login.addEventListener("click", (e) => {
+  btn_login.addEventListener("click", async (e) => {
+    document.getElementById("login").addEventListener("submit",(e) => {
+      e.preventDefault();
+    })
     e.preventDefault();
     let user = document.getElementById("user").value;
     let password = document.getElementById("password").value;
-    let login = validateForm(user, password, null, "login");
+    let login = await validateForm(user, password, null, "login");
     if (login.error) {
-      alert(login.message);
+      alertMassage(login.message);
     }else{
-      alert(login.message);
+      alertMassage(login.message);
+      setTimeout(() => {
+        window.location.href = "../src/pages/landing.html";
+      }, 1200);
     }
   });
-  console.log(encryptPassword("123456"));
-  // let users = [
-  //   { user: "miguel",
-  //     password:"123456",
-  //     characters:[1,3,5],
-  //   },
-  //   { user: "miguel2",
-  //     password:"123456",
-  //     characters:[2,4,6],
-  //   },
-  // ]
 
-  // localStorage.setItem("users",JSON.stringify(users));
-  // let user = validateForm("miguel","123456",null,"login");
-  // console.log(user.message);
 });
