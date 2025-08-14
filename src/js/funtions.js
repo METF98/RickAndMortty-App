@@ -1,6 +1,6 @@
 
-import {bcrypt} from "https://cdn.jsdelivr.net/npm/bcryptjs@3.0.2/umd/index.min.js";
-import { dotenv } from "https://cdn.jsdelivr.net/npm/dotenv@17.2.1/lib/main.min.js";
+import bcrypt from "https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/+esm";
+import dotenv from "https://cdn.jsdelivr.net/npm/dotenv@17.2.1/lib/main.min.js";
 
 export {getCharacters, scrollNavBar, efectForm, validateForm, encryptPassword };
 
