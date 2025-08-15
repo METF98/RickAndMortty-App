@@ -641,7 +641,7 @@ function showLoader() {
  * @version 1.0
  */
 function verificarSesion(){
-  if(sessionStorage.getItem("sesion") == null){
+  if(sessionStorage.getItem("sesion") == null || sessionStorage.getItem("sesion") == "[]"){
     return false;
   }else{
     let sesion = JSON.parse(sessionStorage.getItem("sesion"));
@@ -653,18 +653,3 @@ function verificarSesion(){
   }
 }
 
-function show_pass(id_input, id_btn){
-  let pass = document.querySelector("#password");
-  let btn_pass = document.querySelector("#show-btn");
-
-  // console.log(pass.value);
-    if(pass.value != ""){
-      if(pass.type == "password"){
-      pass.type = "text";
-      show_pass.style.display = "none";
-    }else{
-      pass.type = "password";
-      show_pass.style.display = "block";
-    }
-  }
-  }

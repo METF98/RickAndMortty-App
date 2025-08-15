@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let btn_login = document.getElementById("btn_login");
   let btn_register = document.getElementById("btn_register");
 
+
   btn_switch.addEventListener("click", (e) => {
     e.preventDefault();
     let p_separador_1 = document.getElementById("p_separador_1");
@@ -67,3 +68,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+

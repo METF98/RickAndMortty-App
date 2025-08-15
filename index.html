@@ -67,14 +67,14 @@
           <i class="fa-solid fa-lock"></i>
           <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password" id="password_register" placeholder="Password">
-            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password', 'eye')"></i>
+            <i id="eye_register" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick='showPassword("password_register", "eye_register")'></i>
           </div>
         </div>
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="fa-solid fa-lock"></i>
           <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password_register_2" id="password_register_2" placeholder="Repeat password">
-            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password', 'eye')"></i>
+            <i id="eye_register_2" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password_register_2', 'eye_register_2')"></i>
           </div>
         </div>
       </div>
@@ -87,5 +87,23 @@
     <p>Created by: Miguel Ticaray</p>
   </footer>
   <script type="module" src="./src/js/register.js"></script>
+  <script>
+    function showPassword(id_input, id_btn){
+      let pass = document.getElementById(id_input);
+      let btn_pass = document.getElementById(id_btn);
+      // console.log(pass.value);
+        if(pass.value != ""){
+          if(pass.type == "password"){
+          pass.type = "text";
+          btn_pass.classList.remove("fa-eye");
+          btn_pass.classList.add("fa-eye-slash");
+        }else{
+          pass.type = "password";
+          btn_pass.classList.add("fa-eye");
+          btn_pass.classList.remove("fa-eye-slash");
+        }
+      }
+    }
+  </script>
 </body>
 </html>
