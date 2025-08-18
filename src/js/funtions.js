@@ -11,6 +11,8 @@ export {
   showLoader,
   hideloader,
   verificarSesion,
+  getUserSeccion,
+  verifyFavorite
 };
 
 /**
@@ -131,6 +133,7 @@ async function getCharacters(page = 1) {
     .catch((error) => console.log(error));
 
   efectCard();
+  verifyFavorite();
   favorite();
 }
 
@@ -149,6 +152,20 @@ function lifeStatus(status) {
   } else {
     return "text-gray-400";
   }
+}
+
+function verifyFavorite() {
+  document.querySelectorAll(".heart").forEach((heart) => {
+    let id = heart.parentElement.parentElement.id;
+    let userName = document.getElementById("user").textContent;
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let userIndex = users.findIndex(u => u.user === userName);
+    let user = users[userIndex];
+    if (user.characters.includes(id)) {
+      heart.classList.remove("text-zinc-900");
+      heart.classList.add("text-red-500");
+    }
+  })
 }
 
 /**
@@ -218,7 +235,6 @@ function efectCard() {
 function favorite() {
   document.querySelectorAll(".heart").forEach((heart) => {
     heart.addEventListener("click", () => {
-      if (localStorage.getItem("logged") === "true") {
         heart.classList.toggle("text-zinc-900");
         heart.classList.toggle("text-red-500");
         gsap.to(heart, {
@@ -227,9 +243,29 @@ function favorite() {
           yoyo: true,
           duration: 0.2,
         });
-      } else {
-        alertMassage("Debes iniciar sesión para agregar a favoritos");
-      }
+
+        let id = heart.parentElement.parentElement.id;
+        let userName = document.getElementById("user").textContent;
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let userIndex = users.findIndex(u => u.user === userName);
+
+
+        let user = users[userIndex];
+
+        if (!user.characters) {
+          user.characters = [];
+        }
+
+        let characterIndex = user.characters.indexOf(id);
+
+        if (characterIndex === -1) {
+          user.characters.push(id);
+        } else {
+          user.characters.splice(characterIndex, 1);
+        }
+
+        localStorage.setItem("users", JSON.stringify(users));
+        console.log(`Favoritos actualizados: ${user.characters}`);
     });
   });
 }
@@ -493,30 +529,42 @@ async function validateForm(users, password, password_2 = null, form) {
   }
 }
 
+// /**
+//  * @description Function to search the user in the localStorage
+//  * @param {string} user - The user to search @example "miguel"
+//  * @return {object} - The user @example {user:"miguel",password:"123456",characters:[1,3,5]}
+//  * @author Miguel Ticaray
+//  * @version 1.0
+//  */
+// function searchStorage(user) {
+//   let respuesta;
+//   if (localStorage.getItem("users") == null) {
+//     localStorage.setItem("users", JSON.stringify([]));
+//   }
+
+//   for (let i = 0; i < JSON.parse(localStorage.getItem("users")).length; i++) {
+//     if (JSON.parse(localStorage.getItem("users"))[i].user == user) {
+//       respuesta = JSON.parse(localStorage.getItem("users"))[i];
+//       if (respuesta) {
+//         return respuesta;
+//       } else {
+//         return false;
+//       }
+//     }
+//   }
+// }
+
+
 /**
  * @description Function to search the user in the localStorage
  * @param {string} user - The user to search @example "miguel"
- * @return {object} - The user @example {user:"miguel",password:"123456",characters:[1,3,5]}
- * @author Miguel Ticaray
- * @version 1.0
+ * @return {object|boolean} - The user object or false if not found
  */
 function searchStorage(user) {
-  let respuesta = null;
-  if (localStorage.getItem("users") == null) {
-    localStorage.setItem("users", JSON.stringify([]));
-  }
-
-  for (let i = 0; i < JSON.parse(localStorage.getItem("users")).length; i++) {
-    if (JSON.parse(localStorage.getItem("users"))[i].user == user) {
-      respuesta = JSON.parse(localStorage.getItem("users"))[i];
-      if (respuesta) {
-        return respuesta;
-      } else {
-        return false;
-      }
-    }
-  }
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  return users.find(u => u.user === user) || false;
 }
+
 
 /**
  * @description Function to register a new user
@@ -525,6 +573,9 @@ function searchStorage(user) {
  * @return {boolean}
  */
 function register(user, password) {
+  if (localStorage.getItem("users") == null) {
+    localStorage.setItem("users", JSON.stringify([]));
+  }
   let passwordHash = encryptPassword(password);
   let users = JSON.parse(localStorage.getItem("users"));
   users.push({ user: user, password: passwordHash, characters: [] });
@@ -651,5 +702,16 @@ function verificarSesion(){
       return false;
     }
   }
+}
+
+/**
+ * @description Function to show the user in the navbar
+ * @return {void}
+ * @Author Miguel Ticaray
+ * @version 1.0
+ */
+function getUserSeccion(){
+  let user = document.getElementById('user');
+  user.innerHTML = JSON.parse(sessionStorage.getItem('sesion'))[0].logged == true ? JSON.parse(sessionStorage.getItem('sesion'))[0].user : '';
 }
 

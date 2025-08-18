@@ -1,14 +1,13 @@
-import {getCharacters, scrollNavBar,showLoader, hideloader,verificarSesion,alertMassage} from'./funtions.js';
+import {getCharacters, scrollNavBar,showLoader, hideloader,verificarSesion,alertMassage,getUserSeccion,verifyFavorite} from'./funtions.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
   if(verificarSesion()){
 
-    document.getElementById('user').innerHTML = JSON.parse(sessionStorage.getItem('sesion'))[0].logged == true ? JSON.parse(sessionStorage.getItem('sesion'))[0].user : '';
-
     showLoader();
     alertMassage('Welcome to the app');
+    getUserSeccion();
 
     setTimeout(() => {
       hideloader();
