@@ -1,4 +1,4 @@
-import {getCharacters, scrollNavBar,showLoader, hideloader,verificarSesion,alertMassage,getUserSeccion,verifyFavorite} from'./funtions.js';
+import {paginator, scrollNavBar,showLoader, hideloader,verificarSesion,alertMassage,getUserSeccion} from'./funtions.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       hideloader();
-      getCharacters();
+      paginator();
     }, 2000);
 
     document.addEventListener('scroll', scrollNavBar);

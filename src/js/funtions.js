@@ -2,7 +2,7 @@ import bcrypt from "https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/+esm";
 import "./env.js";
 
 export {
-  getCharacters,
+  paginator,
   scrollNavBar,
   efectForm,
   validateForm,
@@ -11,9 +11,64 @@ export {
   showLoader,
   hideloader,
   verificarSesion,
-  getUserSeccion,
-  verifyFavorite
+  getUserSeccion
 };
+
+async function paginator(){
+  let currentPage = 1;
+  let totalPages = 1;
+  let nextButton = document.getElementById("next");
+  let prevButton = document.getElementById("prev");
+  let pageNumbersContainer = document.getElementById("pageNumbers");
+
+  if(currentPage == 1){
+    await getCharacters(currentPage);
+  }
+
+  pageNumbersContainer.innerHTML = "";
+
+  nextButton.addEventListener("click", async() => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      await getCharacters(currentPage);
+    }
+  });
+
+  prevButton.addEventListener("click", async () => {
+    if (currentPage > 1) {
+      currentPage--;
+      await getCharacters(currentPage);
+    }
+  });
+
+  await fetch("https://rickandmortyapi.com/api/character")
+  .then((response) => response.json())
+  .then((data) => {
+    totalPages = Math.ceil(data.info.count / 20);
+  });
+
+  let start = (currentPage - 1) * 20 + 1;
+  let end = currentPage * 5;
+
+  console.log(currentPage);
+
+  for (let i = start; i <= end ; i++) {
+    let pageButton = document.createElement("button");
+    pageButton.textContent = i;
+    pageButton.className = "cursor-pointer flex gap-3 items-center justify-center";
+    if (i === currentPage) {
+      pageButton.disabled = true;
+    }
+    pageButton.addEventListener("click", async () => {
+      currentPage = i;
+      await getCharacters(currentPage);
+    });
+    pageNumbersContainer.appendChild(pageButton);
+  }
+  currentPage++;
+  console
+}
+
 
 /**
  * @description Function to get the characters from the API
@@ -21,8 +76,9 @@ export {
  * @author Miguel Ticaray
  * @version 1.0
  */
-async function getCharacters(page = 1) {
+async function getCharacters(page) {
   let cards = document.getElementById("cards");
+  cards.innerHTML = "";
 
   //Get characters
   await fetch("https://rickandmortyapi.com/api/character?page=" + page)
@@ -154,6 +210,12 @@ function lifeStatus(status) {
   }
 }
 
+/**
+ * @description Function to verify if the character is favorite
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
 function verifyFavorite() {
   document.querySelectorAll(".heart").forEach((heart) => {
     let id = heart.parentElement.parentElement.id;
@@ -528,31 +590,6 @@ async function validateForm(users, password, password_2 = null, form) {
     }
   }
 }
-
-// /**
-//  * @description Function to search the user in the localStorage
-//  * @param {string} user - The user to search @example "miguel"
-//  * @return {object} - The user @example {user:"miguel",password:"123456",characters:[1,3,5]}
-//  * @author Miguel Ticaray
-//  * @version 1.0
-//  */
-// function searchStorage(user) {
-//   let respuesta;
-//   if (localStorage.getItem("users") == null) {
-//     localStorage.setItem("users", JSON.stringify([]));
-//   }
-
-//   for (let i = 0; i < JSON.parse(localStorage.getItem("users")).length; i++) {
-//     if (JSON.parse(localStorage.getItem("users"))[i].user == user) {
-//       respuesta = JSON.parse(localStorage.getItem("users"))[i];
-//       if (respuesta) {
-//         return respuesta;
-//       } else {
-//         return false;
-//       }
-//     }
-//   }
-// }
 
 
 /**

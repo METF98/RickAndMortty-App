@@ -88,7 +88,13 @@
       </div>
     </section>
   </main>
-  <footer class="flex justify-end px-4">
+  <footer class="flex flex-col items-start justify-center gap-2 px-4 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl text-lg ">
+    <div class="pagination flex justify-center gap-2 w-full ">
+      <button id="prev" class="cursor-pointer flex gap-3 items-center justify-center lg:hover:text-zinc-500  disabled:text-zinc-600 disabled:cursor-default disabled:hover:text-zinc-600"><i class="fa-solid fa-arrow-left"></i>Prev</button>
+      <div id="pageNumbers" class="cursor-pointer flex gap-3 items-center justify-center"></div>
+      <button id="next" class="cursor-pointer flex gap-3 items-center justify-center lg:hover:scale-105 lg:hover:text-zinc-500 disabled:text-zinc-600 disabled:cursor-default disabled:hover:text-zinc-600">Next<i class="fa-solid fa-arrow-right "></i></button>
+    </div>
+    <div class="w-full h-1 bg-neutral-600"></div>
     <p>Created by: Miguel Ticaray</p>
   </footer>
   <script type="module" src="./../js/main.js"></script>
