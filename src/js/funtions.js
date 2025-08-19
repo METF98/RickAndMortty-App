@@ -949,9 +949,6 @@ function encryptPassword(password) {
  */
 async function decryptPassword(user, password) {
   let passwordHash = user.password;
-  console.log(user);
-  console.log(passwordHash);
-  console.log(password);
 
   try {
     const result = await bcrypt.compare(password, passwordHash);
