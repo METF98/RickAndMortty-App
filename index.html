@@ -25,7 +25,7 @@
 <body class="flex flex-col items-center justify-center p-6 w-sceen h-screen bg-neutral-900 gap-8">
   <img class="w-32 h-32" src="./src/img/favicon.png" alt="logo">
   <h1 class="text-4xl font-bold uppercase text-zinc-100">RICK AND MORTY APP</h1>
-  <form id="login" class="flex items-center justify-center text-zinc-900 bg-neutral-300 border border-zinc-300 rounded-3xl  relative gap-10 p-6 w-[450px] h-80 ">
+  <form id="login" class="flex items-center justify-center text-zinc-900 bg-neutral-300 border border-zinc-300 rounded-3xl  relative gap-10 p-6 w-[450px] h-90 ">
     <div id="login-container" class="flex flex-col items-center justify-center gap-7 ">
         <h2 class="text-2xl font-bold uppercase text-zinc-800">login</h2>
       <div class="flex flex-col gap-6 w-full">
@@ -39,7 +39,7 @@
           <i class="fa-solid fa-lock"></i>
           <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password" id="password" placeholder="Password">
-            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password', 'eye')"></i>
+            <i id="eye" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700"></i>
           </div>
         </div>
       </div>
@@ -64,17 +64,23 @@
           </div>
         </div>
         <div class="flex gap-2 items-center justify-center w-full">
+          <i class="fa-solid fa-envelope"></i>
+          <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
+            <input class="w-full h-full outline-none px-2" type="mail" name="mail_register" id="mail_register" placeholder="email">
+          </div>
+        </div>
+        <div class="flex gap-2 items-center justify-center w-full">
           <i class="fa-solid fa-lock"></i>
           <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password" id="password_register" placeholder="Password">
-            <i id="eye_register" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick='showPassword("password_register", "eye_register")'></i>
+            <i id="eye_register" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700"></i>
           </div>
         </div>
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="fa-solid fa-lock"></i>
           <div class="flex items-center justify-center w-full border border-zinc-600 rounded-lg h-10 relative">
             <input class="w-full h-full outline-none px-2" type="password" name="password_register_2" id="password_register_2" placeholder="Repeat password">
-            <i id="eye_register_2" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700" onclick="showPassword('password_register_2', 'eye_register_2')"></i>
+            <i id="eye_register_2" class="fa-solid fa-eye absolute right-2 cursor-pointer text-zinc-700"></i>
           </div>
         </div>
       </div>
@@ -87,23 +93,5 @@
     <p>Created by: Miguel Ticaray</p>
   </footer>
   <script type="module" src="./src/js/register.js"></script>
-  <script>
-    function showPassword(id_input, id_btn){
-      let pass = document.getElementById(id_input);
-      let btn_pass = document.getElementById(id_btn);
-      // console.log(pass.value);
-        if(pass.value != ""){
-          if(pass.type == "password"){
-          pass.type = "text";
-          btn_pass.classList.remove("fa-eye");
-          btn_pass.classList.add("fa-eye-slash");
-        }else{
-          pass.type = "password";
-          btn_pass.classList.add("fa-eye");
-          btn_pass.classList.remove("fa-eye-slash");
-        }
-      }
-    }
-  </script>
 </body>
 </html>

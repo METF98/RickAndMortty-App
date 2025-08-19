@@ -2,6 +2,7 @@ let btn_theme = document.getElementById('theme');
 let themeContainer = document.getElementById('theme-container');
 let search_container = document.getElementById('search-container');
 let input_search = document.getElementById('search');
+let h1 = document.querySelector('h1');
 
 //Evento para cargar el tema del sitio
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
       search_container.classList.add('text-zinc-300');
       search_container.classList.remove('border-zinc-900');
       search_container.classList.remove('text-zinc-900');
+      input_search.classList.add('text-zinc-300','placeholder:text-zinc-300');
+      input_search.classList.remove('text-zinc-900');
     }
 
     //button theme oscuro
@@ -43,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('text-zinc-900');
     document.body.classList.remove('bg-neutral-900');
     document.body.classList.remove('text-zinc-300');
+    h1.classList.toggle('text-zinc-100');
+
 
     //Input search claro
     if(search_container){
@@ -50,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
       search_container.classList.add('text-zinc-900');
       search_container.classList.remove('border-zinc-300');
       search_container.classList.remove('text-zinc-300');
+      input_search.classList.add('text-zinc-900','placeholder:text-zinc-900');
+      input_search.classList.remove('text-zinc-300');
     }
 
     //button theme claro
@@ -77,12 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('text-zinc-900');
 
         //Input search claro
-        search_container.classList.add('border-zinc-900');
-        search_container.classList.add('text-zinc-900');
-        search_container.classList.add('text-zinc-900');
-        search_container.classList.remove('text-zinc-300');
-        search_container.classList.remove('border-zinc-300');
-        search_container.classList.remove('text-zinc-300');
+        if(search_container){
+          search_container.classList.add('border-zinc-900');
+          search_container.classList.add('text-zinc-900');
+          search_container.classList.add('text-zinc-900');
+          search_container.classList.remove('text-zinc-300');
+          search_container.classList.remove('border-zinc-300');
+          search_container.classList.remove('text-zinc-300');
+          input_search.classList.add('text-zinc-900','placeholder:text-zinc-900');
+          input_search.classList.remove('text-zinc-300','placeholder:text-zinc-300');
+        }
 
         //button theme claro
         themeContainer.classList.add('bg-zinc-200');
@@ -102,10 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('text-zinc-900');
 
         //Input search oscuro
-        search_container.classList.add('border-zinc-300');
-        search_container.classList.add('text-zinc-300');
-        search_container.classList.remove('text-zinc-900');
-        search_container.classList.remove('border-zinc-900');
+        if(search_container){
+          search_container.classList.add('border-zinc-300');
+          search_container.classList.add('text-zinc-300');
+          search_container.classList.remove('text-zinc-900');
+          search_container.classList.remove('border-zinc-900');
+          input_search.classList.add('text-zinc-300','placeholder:text-zinc-300');
+          input_search.classList.remove('text-zinc-900',    'placeholder:text-zinc-900');
+        }
 
         //button theme oscuro
         themeContainer.classList.remove('bg-zinc-200');

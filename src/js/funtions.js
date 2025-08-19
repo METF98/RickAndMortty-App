@@ -2,11 +2,14 @@ import bcrypt from "https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/+esm";
 import "./env.js";
 
 export {
-  paginator,
+  getCharacters,
+  getCharactersFavorites,
+  searchCharter,
   scrollNavBar,
   efectForm,
   validateForm,
   encryptPassword,
+  showPassword,
   alertMassage,
   showLoader,
   hideloader,
@@ -14,77 +17,32 @@ export {
   getUserSeccion
 };
 
-async function paginator(){
+
   let currentPage = 1;
-  let totalPages = 1;
+  let totalPages = 0;
+  let maxPages = 5;
   let nextButton = document.getElementById("next");
   let prevButton = document.getElementById("prev");
-  let pageNumbersContainer = document.getElementById("pageNumbers");
-
-  if(currentPage == 1){
-    await getCharacters(currentPage);
-  }
-
-  pageNumbersContainer.innerHTML = "";
-
-  nextButton.addEventListener("click", async() => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      await getCharacters(currentPage);
-    }
-  });
-
-  prevButton.addEventListener("click", async () => {
-    if (currentPage > 1) {
-      currentPage--;
-      await getCharacters(currentPage);
-    }
-  });
-
-  await fetch("https://rickandmortyapi.com/api/character")
-  .then((response) => response.json())
-  .then((data) => {
-    totalPages = Math.ceil(data.info.count / 20);
-  });
-
-  let start = (currentPage - 1) * 20 + 1;
-  let end = currentPage * 5;
-
-  console.log(currentPage);
-
-  for (let i = start; i <= end ; i++) {
-    let pageButton = document.createElement("button");
-    pageButton.textContent = i;
-    pageButton.className = "cursor-pointer flex gap-3 items-center justify-center";
-    if (i === currentPage) {
-      pageButton.disabled = true;
-    }
-    pageButton.addEventListener("click", async () => {
-      currentPage = i;
-      await getCharacters(currentPage);
-    });
-    pageNumbersContainer.appendChild(pageButton);
-  }
-  currentPage++;
-  console
-}
-
 
 /**
  * @description Function to get the characters from the API
+ * @param {number} page - The page number
  * @return {Promise} - The characters
  * @author Miguel Ticaray
  * @version 1.0
  */
-async function getCharacters(page) {
+async function getCharacters(page = 1) {
   let cards = document.getElementById("cards");
+
   cards.innerHTML = "";
 
   //Get characters
-  await fetch("https://rickandmortyapi.com/api/character?page=" + page)
+  await fetch(`https://rickandmortyapi.com/api/character?page=${page}`)
     .then((response) => response.json())
     .then((data) => {
       return data.results.map((character) => {
+        totalPages = data.info.pages;
+        currentPage = page;
         //Create elements
         let card = document.createElement("div");
         let div_img = document.createElement("div");
@@ -191,6 +149,364 @@ async function getCharacters(page) {
   efectCard();
   verifyFavorite();
   favorite();
+  paginator();
+}
+
+/**
+ * @description Function to get the characters favorites
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+async function getCharactersFavorites(){
+  let cardsFavorites = document.getElementById('cards');
+  let user = JSON.parse(sessionStorage.getItem('sesion'))[0].user;
+  let charactersFavorites = JSON.parse(localStorage.getItem('users')).find(u => u.user === user).characters;
+
+  if(charactersFavorites.length == 0){
+    cardsFavorites.innerHTML = '<h2 class="text-center text-2xl">No tienes personajes favoritos agregados</h2>';
+  }else{
+    cardsFavorites.innerHTML = '';
+  }
+
+  for (let i = 0; i < charactersFavorites.length; i++) {
+    let idCharacter = charactersFavorites[i];
+    await fetch(`https://rickandmortyapi.com/api/character/${idCharacter}`)
+    .then((response) => response.json())
+    .then((data) => {
+      //Create elements
+      let card = document.createElement("div");
+      let div_img = document.createElement("div");
+      let img = document.createElement("img");
+      let div_info = document.createElement("div");
+      let heart = document.createElement("i");
+      let name = document.createElement("h2");
+      let species = document.createElement("p");
+      let gender = document.createElement("p");
+      let status = document.createElement("p");
+
+      //Add classes
+      card.classList.add(
+        "card",
+        "border",
+        "flex",
+        "flex-col",
+        "gap-2",
+        "rounded-lg",
+        "shadow-xl",
+        "hover:scale-105",
+        "transition-all",
+        "duration-200",
+        "ease-in-out",
+        "cursor-pointer",
+        "group/characters"
+      );
+      div_img.classList.add(
+        "rounded-t-lg",
+        "overflow-hidden",
+        "shadow-xl",
+        "relative"
+      );
+      img.classList.add(
+        "w-full",
+        "h-full",
+        "object-center",
+        "object-cover",
+        "xl:group-hover/characters:scale-110",
+        "transition-all",
+        "duration-200",
+        "ease-in-out"
+      );
+      heart.classList.add(
+        "heart",
+        "cursor-pointer",
+        "fa-solid",
+        "fa-heart",
+        "text-zinc-900",
+        "text-2xl",
+        "transition-all",
+        "duration-200",
+        "ease-in-out",
+        "absolute",
+        "top-2",
+        "right-2"
+      );
+      div_info.classList.add(
+        "flex",
+        "flex-col",
+        "justify-center",
+        "items-start",
+        "gap-2",
+        "px-2",
+        "py-1"
+      );
+      name.classList.add(
+        "text-xl",
+        "text-center",
+        "xl:group-hover/characters:text-teal-300",
+        "transition-all",
+        "duration-200",
+        "ease-in-out"
+      );
+      species.classList.add("flex", "gap-2");
+      gender.classList.add("flex", "gap-2");
+      status.classList.add("status", "flex", "gap-2");
+
+      //Add attributes
+      card.id = data.id;
+      img.src = data.image;
+      img.alt = data.name;
+      name.textContent = data.name;
+      species.innerHTML = `<i class="fa-solid fa-globe"></i>${data.species}`;
+      gender.innerHTML = `<i class="fa-solid fa-venus-mars"></i>${data.gender}`;
+      status.innerHTML = `<i class="fa-regular fa-circle-dot ${lifeStatus(
+        data.status
+      )}"></i> ${data.status}`;
+
+      //Append elements
+      div_img.appendChild(img);
+      div_img.appendChild(heart);
+      div_info.appendChild(name);
+      div_info.appendChild(species);
+      div_info.appendChild(gender);
+      div_info.appendChild(status);
+      card.appendChild(div_img);
+      card.appendChild(div_info);
+      cardsFavorites.appendChild(card);
+    });
+  }
+  if(charactersFavorites.length > 20){
+    totalPages = charactersFavorites.length / 20;
+    currentPage = 1;
+  }else{
+    totalPages = 1;
+    currentPage = 1;
+  }
+  efectCard();
+  verifyFavorite();
+  favorite();
+  paginator();
+}
+
+/**
+ * @description Function to search characters in the API
+ * @param {number} page - The page number to search @example 1
+ * @param {string} nameCharacter - The name of the character to search @example "morty"
+ * @function efectCard - Function to add the effect to the cards
+ * @function verifyFavorite - Function to verify if the character is favorite
+ * @function favorite - Function to add the favorite character to the local storage
+ * @function paginator - Function to create the paginator
+ * @return {Promise} - The characters
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+async function searchCharter(nameCharacter,page = 1) {
+  let cards = document.getElementById("cards");
+  cards.innerHTML = "";
+  await fetch(`https://rickandmortyapi.com/api/character?page=${page}&&name=${nameCharacter}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.info.count > 20){
+          totalPages = data.info.pages;
+          currentPage = page;
+        }
+      return data.results.map((character) => {
+        //Create elements
+        let card = document.createElement("div");
+        let div_img = document.createElement("div");
+        let img = document.createElement("img");
+        let div_info = document.createElement("div");
+        let heart = document.createElement("i");
+        let name = document.createElement("h2");
+        let species = document.createElement("p");
+        let gender = document.createElement("p");
+        let status = document.createElement("p");
+
+        //Add classes
+        card.classList.add(
+          "card",
+          "border",
+          "flex",
+          "flex-col",
+          "gap-2",
+          "rounded-lg",
+          "shadow-xl",
+          "hover:scale-105",
+          "transition-all",
+          "duration-200",
+          "ease-in-out",
+          "cursor-pointer",
+          "group/characters"
+        );
+        div_img.classList.add(
+          "rounded-t-lg",
+          "overflow-hidden",
+          "shadow-xl",
+          "relative"
+        );
+        img.classList.add(
+          "w-full",
+          "h-full",
+          "object-center",
+          "object-cover",
+          "xl:group-hover/characters:scale-110",
+          "transition-all",
+          "duration-200",
+          "ease-in-out"
+        );
+        heart.classList.add(
+          "heart",
+          "cursor-pointer",
+          "fa-solid",
+          "fa-heart",
+          "text-zinc-900",
+          "text-2xl",
+          "transition-all",
+          "duration-200",
+          "ease-in-out",
+          "absolute",
+          "top-2",
+          "right-2"
+        );
+        div_info.classList.add(
+          "flex",
+          "flex-col",
+          "justify-center",
+          "items-start",
+          "gap-2",
+          "px-2",
+          "py-1"
+        );
+        name.classList.add(
+          "text-xl",
+          "text-center",
+          "xl:group-hover/characters:text-teal-300",
+          "transition-all",
+          "duration-200",
+          "ease-in-out"
+        );
+        species.classList.add("flex", "gap-2");
+        gender.classList.add("flex", "gap-2");
+        status.classList.add("status", "flex", "gap-2");
+
+        //Add attributes
+        card.id = character.id;
+        img.src = character.image;
+        img.alt = character.name;
+        name.textContent = character.name;
+        species.innerHTML = `<i class="fa-solid fa-globe"></i>${character.species}`;
+        gender.innerHTML = `<i class="fa-solid fa-venus-mars"></i>${character.gender}`;
+        status.innerHTML = `<i class="fa-regular fa-circle-dot ${lifeStatus(
+          character.status
+        )}"></i> ${character.status}`;
+
+        //Append elements
+        div_img.appendChild(img);
+        div_img.appendChild(heart);
+        div_info.appendChild(name);
+        div_info.appendChild(species);
+        div_info.appendChild(gender);
+        div_info.appendChild(status);
+        card.appendChild(div_img);
+        card.appendChild(div_info);
+        cards.appendChild(card);
+      });
+    });
+  efectCard();
+  verifyFavorite();
+  favorite();
+  paginator();
+}
+
+
+/**
+ * @description Function to create the paginator
+ * @returns {void}
+ * @function getCharacters - Function to get the characters
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function paginator(){
+  let pageNumbersContainer = document.getElementById("pageNumbers");
+  pageNumbersContainer.innerHTML = "";
+
+  prevButton.disabled = currentPage === 1;
+  prevButton.onclick = async () => {
+    if (currentPage > 1) {
+      currentPage-=1;
+      scrollSmooth();
+      setTimeout(async() => {
+        if(document.getElementById('search').value != ''){
+          await searchCharter(document.getElementById('search').value,currentPage);
+        }else{
+          await getCharacters(currentPage);
+        }
+      })
+    }
+  };
+
+  // Calculate the range of page numbers to display
+  let start = Math.max(1, currentPage - Math.floor(maxPages / 2));
+  let end = currentPage + maxPages - 1;
+
+  // Ensure the end is not greater than the total number of pages
+  if (end > totalPages) {
+    end = totalPages;
+    start = Math.max(1, end - maxPages + 1);
+  }
+
+  for (let i = start; i <= end ; i++) {
+    let pageButton = document.createElement("button");
+    pageButton.textContent = i;
+    pageButton.className = "cursor-pointer flex gap-3 items-center justify-center lg:hover:text-zinc-500 disabled:text-zinc-600 disabled:cursor-default disabled:hover:text-zinc-600";
+    if (i === currentPage) {
+      pageButton.disabled = true;
+    }
+    pageButton.addEventListener("click", async () => {
+      currentPage = i;
+      scrollSmooth();
+      setTimeout(async () => {
+        if(document.getElementById('search').value != ''){
+          await searchCharter(document.getElementById('search').value, currentPage);
+        }else{
+          await getCharacters(currentPage);
+        }
+      })
+    });
+    pageNumbersContainer.appendChild(pageButton);
+  }
+
+  nextButton.disabled = currentPage === totalPages;
+  nextButton.onclick = async () => {
+    if (currentPage < totalPages) {
+      prevButton.disabled = false;
+      currentPage++;
+      scrollSmooth();
+      setTimeout(async () => {
+        if(document.getElementById('search').value != ''){
+          await searchCharter(document.getElementById('search').value, currentPage);
+        }else{
+          await getCharacters(currentPage);
+        }
+      })
+    }
+  };
+
+}
+
+/**
+ * @description Function to scroll to the top of the page
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function scrollSmooth() {
+  if (window.scrollY > 0) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 }
 
 /**
@@ -242,50 +558,16 @@ function efectCard() {
   gsap.fromTo(
     cards,
     {
-      y: 500,
       opacity: 0,
       scale: 0.5,
     },
     {
-      y: 0,
       opacity: 1,
       scale: 1,
       duration: 1,
       ease: "expo.out",
-      stagger: 0.2,
     }
   );
-
-  cards.forEach((card) => {
-    card.addEventListener("mouseover", cardHover);
-
-    /**
-     * @description Function to animate the cards hover
-     * @return {void}
-     * @author Miguel Ticaray
-     * @version 1.0
-     */
-    function cardHover() {
-      gsap
-        .timeline()
-        .to(card, {
-          scale: 0.75,
-          duration: 0.3,
-          onStart: () => {
-            card.removeEventListener("mouseover", cardHover);
-          },
-        })
-        .to(card, {
-          scale: 1,
-          duration: 0.3,
-          onComplete: () => {
-            setTimeout(() => {
-              card.addEventListener("mouseover", cardHover);
-            }, 500);
-          },
-        });
-    }
-  });
 }
 
 /**
@@ -327,7 +609,6 @@ function favorite() {
         }
 
         localStorage.setItem("users", JSON.stringify(users));
-        console.log(`Favoritos actualizados: ${user.characters}`);
     });
   });
 }
@@ -386,6 +667,7 @@ function alertMassage(info_message) {
   //remove elements
   setTimeout(() => {
     modal_message_container.remove();
+    document.cookie = "message=true; expires=/; path=/";
   }, 3000);
 }
 
@@ -545,8 +827,10 @@ function efectForm(
  * @param {string} [password_2=null] - password of the user @example "123456"
  * @param {string} form - form to validate @example "login" or "register"
  * @return {object} - object with the result of the validation @example {error: true , message: "El usuario no existe"}
+ * @author Miguel Ticaray
+ * @version 1.0
  */
-async function validateForm(users, password, password_2 = null, form) {
+async function validateForm(users, password, password_2 = null,mail = null, form) {
   if (form == "login") {
     if (sessionStorage.getItem("sesion") == null) {
       sessionStorage.setItem("sesion", JSON.stringify([]));
@@ -558,6 +842,12 @@ async function validateForm(users, password, password_2 = null, form) {
     if (users == "" || password == "") {
       return { error: true, message: "Debes completar todos los campos" };
     } else {
+      if(!validateRegex( /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚ]{4,120}$/i,users)){
+        return { error: true, message: "Formato de usuario no válido" };
+      }
+      if(validateRegex(/^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/, password)){
+        return { error: true, message: "La contraseña ingresada no es válida" };
+      }
       let passwordDecrypt = await decryptPassword(datos, password);
       if (passwordDecrypt) {
         let sesion = JSON.parse(sessionStorage.getItem("sesion"));
@@ -578,13 +868,22 @@ async function validateForm(users, password, password_2 = null, form) {
         return { error: true, message: "El usuario ingresado ya existe" };
       }
     }
-    if (users == "" || password == "" || password_2 == "") {
+    if (users == "" || password == "" || password_2 == "" || mail == "") {
       return { error: true, message: "Debes completar todos los campos" };
     } else {
+      if(!validateRegex( /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚ]{4,120}$/i,users)){
+        return { error: true, message: "Formato de usuario no válido" };
+      }
+      if(validateRegex(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]$/, mail)){
+        return { error: true, message: "El correo ingresado no es válido" };
+      }
       if (password != password_2) {
         return { error: true, message: "Las contraseñas no coinciden" };
       }
-      if (register(users, password)) {
+      if(validateRegex(/^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/, password)){
+        return {error: true, message: "La contraseña debe tener al menos 8 caracteres" };
+      }
+      if (register(users, password, mail)) {
         return { error: false, message: "Registro exitoso" };
       }
     }
@@ -596,6 +895,8 @@ async function validateForm(users, password, password_2 = null, form) {
  * @description Function to search the user in the localStorage
  * @param {string} user - The user to search @example "miguel"
  * @return {object|boolean} - The user object or false if not found
+ * @author Miguel Ticaray
+ * @version 1.0
  */
 function searchStorage(user) {
   let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -608,14 +909,16 @@ function searchStorage(user) {
  * @param {string} user - The user to register @example "miguel"
  * @param {string} password - The password to register @example "123456"
  * @return {boolean}
+ * @author Miguel Ticaray
+ * @version 1.0
  */
-function register(user, password) {
+function register(user, password, mail) {
   if (localStorage.getItem("users") == null) {
     localStorage.setItem("users", JSON.stringify([]));
   }
   let passwordHash = encryptPassword(password);
   let users = JSON.parse(localStorage.getItem("users"));
-  users.push({ user: user, password: passwordHash, characters: [] });
+  users.push({ user: user, password: passwordHash,mail: mail, characters: [] });
   localStorage.setItem("users", JSON.stringify(users));
   return true;
 }
@@ -641,9 +944,14 @@ function encryptPassword(password) {
  * @param {string} user - The user for password to compare @example "miguel"
  * @param {string} password - The password to compare @example "123456"
  * @return {boolean} - The result of the comparison
+ * @author Miguel Ticaray
+ * @version 1.0
  */
 async function decryptPassword(user, password) {
   let passwordHash = user.password;
+  console.log(user);
+  console.log(passwordHash);
+  console.log(password);
 
   try {
     const result = await bcrypt.compare(password, passwordHash);
@@ -655,6 +963,31 @@ async function decryptPassword(user, password) {
     }
   } catch (err) {
     return false;
+  }
+}
+
+/**
+ * @description Function to show or hide the password
+ * @param {string} id_input - The id of the input
+ * @param {string} id_btn - The id of the button
+ * @return {void}
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function showPassword(id_input, id_btn){
+  let pass = document.getElementById(id_input);
+  let btn_pass = document.getElementById(id_btn);
+  // console.log(pass.value);
+    if(pass.value != ""){
+      if(pass.type == "password"){
+      pass.type = "text";
+      btn_pass.classList.remove("fa-eye");
+      btn_pass.classList.add("fa-eye-slash");
+    }else{
+      pass.type = "password";
+      btn_pass.classList.add("fa-eye");
+      btn_pass.classList.remove("fa-eye-slash");
+    }
   }
 }
 
@@ -744,11 +1077,24 @@ function verificarSesion(){
 /**
  * @description Function to show the user in the navbar
  * @return {void}
- * @Author Miguel Ticaray
+ * @author Miguel Ticaray
  * @version 1.0
  */
 function getUserSeccion(){
   let user = document.getElementById('user');
   user.innerHTML = JSON.parse(sessionStorage.getItem('sesion'))[0].logged == true ? JSON.parse(sessionStorage.getItem('sesion'))[0].user : '';
+}
+
+
+/**
+ * @description Function to validate the regex
+ * @param {string} regex - The regex to validate @example "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+ * @param {string} value - The value to validate @example "miguel"
+ * @return {boolean} - The result of the validation
+ * @author Miguel Ticaray
+ * @version 1.0
+ */
+function validateRegex(regex, value) {
+  return regex.test(value);
 }
 

@@ -39,14 +39,14 @@
         <ul id="menu" class="flex gap-4">
           <li
             class=" cursor-pointer px-3 py-2 transition-all duration-200 ease  hover:bg-neutral-400 hover:text-zinc-100 rounded-full group/home">
-            <a href="#home">
+            <a href="./landing.html">
               <i
                 class="fa-solid fa-house transition-all ease-in duration-200 group-hover/home:scale-110  group-hover/home:text-neutral-900"></i>
             </a>
           </li>
           <li id="favorites"
             class=" cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/favorites">
-            <a href="./../pages/favorites-list.html">
+            <a href="#">
               <i
                 class="fa-solid fa-heart transition-all ease-in duration-200  group-hover/favorites:scale-110 group-hover/favorites:text-neutral-900"></i>
             </a>
@@ -69,26 +69,22 @@
     </div>
   </nav>
   <main class="flex flex-col gap-8 items-center px-6 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl ">
-    <header class="flex flex-col items-start gap-2 w-full">
-      <h1>WELCOME TO RICK AND MORTY APP</h1>
-      <p>Find your favorite character</p>
+    <header class="flex flex-col items-center gap-2 w-full">
+      <h1 class="text-4xl font-bold uppercase text-zinc-100">your favorite characters</h1>
     </header>
-    <section id="home" class="flex flex-col justify-center items-start gap-6 w-full">
-      <div class="flex flex-col gap-2">
-        <h2>Characters</h2>
-        <div id="search-container" class="flex justify-center gap-2 border rounded-full px-3 py-1 ">
-          <input class="bg-transparent outline-none w-full " type="text" id="search" placeholder="Search">
-          <button id="search-button" class="cursor-pointer px-2 group/search text-lg">
-            <i class="fa-solid fa-magnifying-glass group-hover/search:text-zinc-100"></i>
-          </button>
-        </div>
-      </div>
+    <section id="favoritesList" class="flex flex-col justify-center items-start gap-6 w-full">
       <div id="cards"
         class=" w-full grid grid-cols-2 md:grid-cols-3 justify-items-center items-content-center lg:grid-cols-4  gap-4">
       </div>
     </section>
   </main>
-  <footer class="flex justify-end px-4">
+  <footer class="flex flex-col items-start justify-center gap-2 px-4 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl text-lg ">
+    <div class="pagination flex justify-center gap-2 w-full ">
+      <button id="prev" class="cursor-pointer flex gap-3 items-center justify-center lg:hover:text-zinc-500  disabled:text-zinc-600 disabled:cursor-default disabled:hover:text-zinc-600"><i class="fa-solid fa-arrow-left"></i>Prev</button>
+      <div id="pageNumbers" class="cursor-pointer flex gap-3 items-center justify-center"></div>
+      <button id="next" class="cursor-pointer flex gap-3 items-center justify-center lg:hover:scale-105 lg:hover:text-zinc-500 disabled:text-zinc-600 disabled:cursor-default disabled:hover:text-zinc-600">Next<i class="fa-solid fa-arrow-right "></i></button>
+    </div>
+    <div class="w-full h-1 bg-neutral-600"></div>
     <p>Created by: Miguel Ticaray</p>
   </footer>
   <script type="module" src="./../js/main.js"></script>

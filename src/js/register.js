@@ -1,4 +1,4 @@
-import { efectForm, validateForm, alertMassage,verificarSesion} from "./funtions.js";
+import { efectForm, validateForm, alertMassage,verificarSesion,showPassword} from "./funtions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   if(verificarSesion()){
@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     let p_separador_1 = document.getElementById("p_separador_1");
     let p_separador_2 = document.getElementById("p_separador_2");
+    document.getElementById("user").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("user_register").value = "";
+    document.getElementById("password_register").value = "";
+    document.getElementById("password_register_2").value = "";
+    document.getElementById("mail_register").value = "";
+
     efectForm(
       0,
       -225,
@@ -36,7 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let user = document.getElementById("user_register").value;
     let password = document.getElementById("password_register").value;
     let password2 = document.getElementById("password_register_2").value;
-    let registro = await validateForm(user, password, password2, "register");
+    let mail = document.getElementById("mail_register").value;
+    let registro = await validateForm(user, password, password2, mail, "register");
 
     if (registro.error) {
       alertMassage(registro.message);
@@ -56,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     let user = document.getElementById("user").value;
     let password = document.getElementById("password").value;
-    let login = await validateForm(user, password, null, "login");
+    let login = await validateForm(user, password,null,null, "login");
     if (login.error) {
       alertMassage(login.message);
     }else{
@@ -65,6 +73,18 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../src/pages/landing.html";
       }, 1200);
     }
+  });
+
+  document.getElementById('eye').addEventListener('click', (e) => {
+    showPassword('password', 'eye');
+  });
+
+  document.getElementById('eye_register').addEventListener('click', (e) => {
+    showPassword('password_register', 'eye_register');
+  });
+
+  document.getElementById('eye_register_2').addEventListener('click', (e) => {
+    showPassword('password_register_2', 'eye_register_2');
   });
 
 });
