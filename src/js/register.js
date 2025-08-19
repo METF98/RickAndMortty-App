@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }else{
       alertMassage(login.message);
       setTimeout(() => {
-        window.location.href = "../src/pages/landing.html";
+        window.location.href = "./src/pages/landing.html";
       }, 1200);
     }
   });
