@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('text-zinc-300');
         document.body.classList.add('bg-neutral-100');
         document.body.classList.add('text-zinc-900');
+        h1.classList.toggle('text-zinc-100');
 
         //Input search claro
         if(search_container){
@@ -111,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('text-zinc-300');
         document.body.classList.remove('bg-neutral-100');
         document.body.classList.remove('text-zinc-900');
+        h1.classList.toggle('text-zinc-100');
 
         //Input search oscuro
         if(search_container){

@@ -53,24 +53,62 @@
           </li>
         </ul>
         <div class="flex items-center justify-center cursor-default">
-          <p id="user" class="font-semibold text-lg cursor-default"></p>
+          <p id="user" class="font-semibold text-lg cursor-default uppercase"></p>
         </div>
-        <button id="logout"
-          class="cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/status ">
+        <button
+          class="logout cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/status ">
           <p id="status"
             class="transition-all ease-in duration-200 group-hover/status:scale-110 group-hover/status:text-neutral-900 font-semibold">
             logout
           </p>
         </button>
       </div>
-      <button class="md:hidden p-2 rounded-lg cursor-pointer bg-neutral-600 text-neutral-300 ">
+      <button id="menu-button" class="md:hidden p-2 rounded-lg cursor-pointer bg-neutral-600 text-neutral-300 ">
         <i class="fa-solid fa-bars"></i>
       </button>
+      <div id="menu-mobile" class="hidden md:hidden flex-col gap-4 py-4 px-8 items-center justify-center absolute top-20 right-5 z-10 w-70 bg-neutral-900 rounded-2xl">
+        <ul id="menu" class="flex flex-col gap-4 text-neutral-900 w-full text-lg">
+          <li
+            class=" cursor-pointer px-3 py-2 transition-all duration-200 ease bg-neutral-400  rounded-full w-full">
+            <a class="flex justify-start items-center gap-4 w-full font-semibold" href="./landing.html">
+              <i
+                class="fa-solid fa-house transition-all ease-in duration-200 "></i>
+                <p>Home</p>
+            </a>
+          </li>
+          <li
+            class=" cursor-pointer px-3 py-2 transition-all duration-200 ease-in bg-neutral-400 rounded-full ">
+            <a class="flex justify-start items-center gap-4 w-full font-semibold" href="#">
+              <i
+                class="fa-solid fa-heart transition-all ease-in duration-200"></i>
+                <p>Favorites</p>
+            </a>
+          </li>
+          <li id="containerUser"
+            class=" cursor-pointer px-3 py-2 transition-all duration-200 ease-in bg-neutral-400 rounded-full">
+            <div class="flex items-center justify-start gap-4 cursor-default w-full h-full">
+              <i class="fa-solid fa-user"></i>
+              <p id="user_mobile" class="font-semibold cursor-default uppercase"></p>
+            </div>
+          </li>
+          <li id="containerlogout"
+            class=" flex justify-start items-center cursor-pointer px-3 py-2 transition-all duration-200 ease-in bg-neutral-400 rounded-full  w-full">
+            <button
+              class="logout flex justify-start  gap-4 items-center cursor-pointer transition-all duration-200 ease-in rounded-full w-full h-full">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <p id="status_mobile"
+                class="transition-all ease-in duration-200 font-semibold">
+                logout
+              </p>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
   <main class="flex flex-col gap-8 items-center px-6 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl ">
     <header class="flex flex-col items-center gap-2 w-full">
-      <h1 class="text-4xl font-bold uppercase text-zinc-100">your favorite characters</h1>
+      <h1 class="text-4xl text-center font-bold uppercase text-zinc-100">your favorite characters</h1>
     </header>
     <section id="favoritesList" class="flex flex-col justify-center items-start gap-6 w-full">
       <div id="cards"

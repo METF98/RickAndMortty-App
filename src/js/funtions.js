@@ -1079,7 +1079,9 @@ function verificarSesion(){
  */
 function getUserSeccion(){
   let user = document.getElementById('user');
-  user.innerHTML = JSON.parse(sessionStorage.getItem('sesion'))[0].logged == true ? JSON.parse(sessionStorage.getItem('sesion'))[0].user : '';
+  let user_mobile = document.getElementById('user_mobile');
+  user.textContent = JSON.parse(sessionStorage.getItem('sesion'))[0].logged == true ? JSON.parse(sessionStorage.getItem('sesion'))[0].user : '';
+  user_mobile.textContent = JSON.parse(sessionStorage.getItem('sesion'))[0].logged == true ? JSON.parse(sessionStorage.getItem('sesion'))[0].user : '';
 }
 
 

@@ -35,19 +35,27 @@ document.addEventListener('DOMContentLoaded', () => {
         searchCharter(e.target.value);
       });
     }
+
+    if(document.getElementById('menu-button')){
+      document.getElementById('menu-button').addEventListener('click', () => {
+        document.getElementById('menu-mobile').classList.toggle('hidden');
+      });
+    }
     //logout button event
-    document.getElementById('logout').addEventListener('click', () => {
-      //remove sesion
-      sessionStorage.removeItem('sesion');
-      //remove cookie
-      document.cookie = 'message=false; expires='+ new Date().toUTCString()+'; path=/';
-      //message and reload
-      alertMassage('The session is closing...');
-      showLoader();
-      setTimeout(() => {
-        hideloader();
-        window.location.reload();
-      }, 2000);
+    document.querySelectorAll('.logout').forEach((logout) => {
+      logout.addEventListener('click', () => {
+        //remove sesion
+        sessionStorage.removeItem('sesion');
+        //remove cookie
+        document.cookie = 'message=false; expires='+ new Date().toUTCString()+'; path=/';
+        //message and reload
+        alertMassage('The session is closing...');
+        showLoader();
+        setTimeout(() => {
+          hideloader();
+          window.location.reload();
+        }, 2000);
+      })
     })
 
   }else{
