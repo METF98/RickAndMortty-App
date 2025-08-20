@@ -26,12 +26,12 @@
 
 </head>
 
-<body class="flex flex-col items-center gap-8 w-full xl:min-w-6xl">
+<body class="flex flex-col items-center gap-8 w-full xl:min-w-6xl relative">
   <nav
     class="flex w-full justify-between bg-neutral-900  xl:justify-around items-center gap-2 border-b border-zinc-200/5 py-4 px-6 text-zinc-300 sticky top-0 z-99 ">
     <img class="h-12 hover:scale-110 transition-all duration-200 ease-in" src="./../img/logo.png"
       alt="logo-rick-and-morty">
-    <div class="flex justify-end items-center gap-6 ">
+    <div class="flex justify-end items-center gap-6">
       <div id="theme-container" class="flex items-center border border-zinc-300 rounded-full w-15 overflow-hidden">
         <button id="theme" class="bg-neutral-500 p-1  rounded-full cursor-pointer"></button>
       </div>
@@ -66,11 +66,39 @@
       <button class="md:hidden p-2 rounded-lg cursor-pointer bg-neutral-600 text-neutral-300 ">
         <i class="fa-solid fa-bars"></i>
       </button>
+      <div id="menu-mobile" class="flex md:hidden flex-col gap-4 py-4 px-6 items-center justify-center absolute top-20 right-0 z-10 w-screen bg-neutral-900">
+        <ul id="menu" class="flex flex-col gap-4 w-full">
+          <li
+            class=" cursor-pointer px-3 py-2 transition-all duration-200 ease bg-neutral-400 text-neutral-900 rounded-full w-full">
+            <a href="#">
+              <i
+                class="fa-solid fa-house transition-all ease-in duration-200 "></i>
+            </a>
+          </li>
+          <li id="favorites"
+            class=" cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/favorites">
+            <a href="./../pages/favorites-list.html">
+              <i
+                class="fa-solid fa-heart transition-all ease-in duration-200  group-hover/favorites:scale-110 group-hover/favorites:text-neutral-900"></i>
+            </a>
+          </li>
+        </ul>
+        <div class="flex items-center justify-center cursor-default">
+          <p id="user" class="font-semibold text-lg cursor-default"></p>
+        </div>
+        <button id="logout"
+          class="cursor-pointer px-3 py-2 transition-all duration-200 ease-in hover:bg-neutral-400 rounded-full group/status ">
+          <p id="status"
+            class="transition-all ease-in duration-200 group-hover/status:scale-110 group-hover/status:text-neutral-900 font-semibold">
+            logout
+          </p>
+        </button>
+      </div>
     </div>
   </nav>
-  <main class="flex flex-col gap-8 items-center px-6 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl ">
+  <main class="flex flex-col gap-8 items-center px-6 py-4 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl ">
     <header class="flex flex-col items-center gap-4 w-full">
-      <h1 class="text-4xl font-bold uppercase text-zinc-100">welcome to the rick and morty app</h1>
+      <h1 class="text-4xl font-bold uppercase text-zinc-100 text-center">welcome to the rick and morty app</h1>
       <p class="text-xl font-semibold ">Find your favorite character</p>
     </header>
     <section id="home" class="flex flex-col justify-center items-start gap-6 w-full">
@@ -85,7 +113,7 @@
       </div>
     </section>
   </main>
-  <footer class="flex flex-col items-start justify-center gap-2 px-4 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl text-lg ">
+  <footer class="flex flex-col items-start justify-center gap-4 p-4 w-full xl:w-0 xl:min-w-4xl 2xl:min-w-5xl text-lg ">
     <div class="pagination flex justify-center gap-2 w-full ">
       <button id="prev" class="cursor-pointer flex gap-3 items-center justify-center lg:hover:text-zinc-500  disabled:text-zinc-600 disabled:cursor-default disabled:hover:text-zinc-600"><i class="fa-solid fa-arrow-left"></i>Prev</button>
       <div id="pageNumbers" class="cursor-pointer flex gap-3 items-center justify-center"></div>
