@@ -1,4 +1,4 @@
-import { efectForm, validateForm, alertMassage,verificarSesion,showPassword} from "./funtions.js";
+import { efectForm, validateForm, alertMassage,verificarSesion,showPassword} from "./functions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   if(verificarSesion()){

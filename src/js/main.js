@@ -1,4 +1,4 @@
-import {getCharacters,getCharactersFavorites,searchCharter, scrollNavBar,showLoader, hideloader,verificarSesion,alertMassage,getUserSeccion} from'./funtions.js';
+import {getCharacters,getCharactersFavorites,searchCharter, scrollNavBar,showLoader, hideloader,verificarSesion,alertMassage,getUserSeccion} from'./functions.js';
 
 //gsap animation
 gsap.registerPlugin(ScrollTrigger);
